@@ -10,6 +10,8 @@ public interface SignUpContract {
         void goToLoginFragment();
 
         void goToMainActivity();
+
+        void showMessageError(Exception error);
     }
 
     interface UserActionsListener {

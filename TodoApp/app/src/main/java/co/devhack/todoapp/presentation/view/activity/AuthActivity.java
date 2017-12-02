@@ -47,8 +47,4 @@ public class AuthActivity extends AppCompatActivity
     public void goMainActivity() {
 
     }
-
-    public void click(View view) {
-
-    }
 }
