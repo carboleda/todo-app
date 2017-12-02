@@ -16,4 +16,8 @@
     <string name="full_name">Nombre completo</string>
     <string name="signup">Registrarme</string>
     <string name="already_have_account">Ya tengo una cuenta</string>
+    <string name="recovery">Recuperar</string>
+    <string name="recovery_password">Recuperar contraseña</string>
+    <string name="is_required">Es requrido</string>
+
 </resources>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -25,14 +26,22 @@
         android:textStyle="bold"
         android:layout_marginBottom="20dp"/>
 
-    <EditText
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/email"/>
+        android:id="@+id/tilEmail">
+
+        <android.support.design.widget.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/email"/>
+
+    </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:id="@+id/tilPassword">
 
         <android.support.design.widget.TextInputEditText
             android:layout_width="match_parent"
@@ -42,7 +51,7 @@
 
     </android.support.design.widget.TextInputLayout>
 
-    <TextView
+    <TextView android:id="@+id/tvForgotPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/forgot_password"
@@ -51,20 +60,20 @@
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"/>
 
-    <Switch
+    <Switch android:id="@+id/swRemember"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:text="@string/remember_user"
-        android:switchPadding="5dp" />
+        android:switchPadding="5dp"/>
 
-    <Button
+    <Button android:id="@+id/btnStart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/start"
         android:layout_gravity="center_horizontal"/>
 
-    <Button
+    <Button android:id="@+id/btnNotHaveAccount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
