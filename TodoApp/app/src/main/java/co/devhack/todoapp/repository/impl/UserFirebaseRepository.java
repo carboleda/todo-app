@@ -93,4 +93,20 @@ public class UserFirebaseRepository implements UserRepository {
                     }
                 });
     }
+
+    @Override
+    public void recoveryPassword(String email, final Callback<Boolean> callback) {
+        mAuth.sendPasswordResetEmail(email)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        //Respuesta del envio del correo de recuperacion de contraseña
+                        if(task.isSuccessful()) {
+                            callback.success(true);
+                        } else {
+                            callback.error(task.getException());
+                        }
+                    }
+                });
+    }
 }

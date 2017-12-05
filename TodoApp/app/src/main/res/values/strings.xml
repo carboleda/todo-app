@@ -22,5 +22,10 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="save">Guardar</string>
+    <string name="task_description">Texto de la tarea</string>
+    <string name="add_a_photo">Agrega una foto</string>
+    <string name="recovery_email_sent">Hemos enviado un correo para que recuperes tu contraseña</string>
+    <string name="accept">Aceptar</string>
 
 </resources>
