@@ -1,10 +1,14 @@
 package co.devhack.todoapp.presentation.view.dialog;
 
 
+import android.app.Dialog;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +27,7 @@ public class RecoveryPasswordFragment extends DialogFragment
         implements RecoveryPasswordContract.View, View.OnClickListener {
 
     private RecoveryPasswordContract.UserActionsListener mActionsListener;
+    private View view;
     private TextInputLayout tilEmail;
     private TextView tvMessages;
     private Button btnRecovery;
@@ -37,9 +42,9 @@ public class RecoveryPasswordFragment extends DialogFragment
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_recovery_password, container, false);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_recovery_password, null);
 
         mActionsListener = new RecoveryPasswordPresenter(this);
 
@@ -50,8 +55,20 @@ public class RecoveryPasswordFragment extends DialogFragment
 
         btnRecovery.setOnClickListener(this);
         btnAccept.setOnClickListener(this);
+    }
 
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return view;
+    }
+
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setView(view);
+        return builder.create();
     }
 
     @Override

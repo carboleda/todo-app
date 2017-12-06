@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -19,13 +20,16 @@ import co.devhack.todoapp.presentation.presenter.LoginContract;
 import co.devhack.todoapp.presentation.presenter.LoginPresenter;
 import co.devhack.todoapp.presentation.view.activity.AuthActivity;
 import co.devhack.todoapp.presentation.view.activity.MainActivity;
+import co.devhack.todoapp.presentation.view.dialog.RecoveryPasswordFragment;
 
 /**
  * A simple {@link Fragment} subclass.
+ * https://developer.android.com/reference/android/app/DialogFragment.html
  */
 public class LoginFragment extends Fragment implements LoginContract.View, View.OnClickListener {
 
     private LoginContract.UserActionsListener mActionsListener;
+    private ProgressBar pbProgress;
     private TextInputLayout tilEmail;
     private TextInputLayout tilPassword;
     private TextView tvForgotPassword;
@@ -48,6 +52,7 @@ public class LoginFragment extends Fragment implements LoginContract.View, View.
 
         mActionsListener = new LoginPresenter(this);
 
+        pbProgress = view.findViewById(R.id.pbProgress);
         tilEmail = view.findViewById(R.id.tilEmail);
         tilPassword = view.findViewById(R.id.tilPassword);
         tvForgotPassword = view.findViewById(R.id.tvForgotPassword);
@@ -92,11 +97,23 @@ public class LoginFragment extends Fragment implements LoginContract.View, View.
     public void goToRecoveryPassword() {
         RecoveryPasswordFragment recoveryPasswordFragment = RecoveryPasswordFragment.getInstance();
         recoveryPasswordFragment.show(getFragmentManager(), null);
+        //AuthActivity authActivity = (AuthActivity) getActivity();
+        //authActivity.replaceFragment(recoveryPasswordFragment, true);
     }
 
     @Override
     public void showMessageError(Exception error) {
         Snackbar.make(getView(), error.getMessage(), Snackbar.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showProgress() {
+        pbProgress.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideProgress() {
+        pbProgress.setVisibility(View.INVISIBLE);
     }
 
     private void onLogin() {
