@@ -9,6 +9,7 @@ import co.devhack.todoapp.helpers.Callback;
 import co.devhack.todoapp.helpers.ThreadExecutor;
 import co.devhack.todoapp.repository.TodoRepository;
 import co.devhack.todoapp.repository.impl.TodoLocalRepository;
+import co.devhack.todoapp.repository.impl.TodoRestRepository;
 
 /**
  * Created by krlosf on 5/12/17.
@@ -19,7 +20,8 @@ public class TodoUseCaseImpl implements TodoUseCase {
     private TodoRepository todoRepository;
 
     public TodoUseCaseImpl() {
-        this.todoRepository = new TodoLocalRepository();
+        //this.todoRepository = new TodoLocalRepository();
+        this.todoRepository = new TodoRestRepository();
     }
 
     @Override
@@ -29,7 +31,8 @@ public class TodoUseCaseImpl implements TodoUseCase {
             @Override
             public Todo execute() throws Exception {
                 Todo todo = new Todo(description, finishDate, finished, image, color);
-                todoRepository.insert(todo);
+                Long id = todoRepository.insert(todo);
+                todo.setId(id.intValue());
                 return todo;
             }
 
@@ -45,13 +48,43 @@ public class TodoUseCaseImpl implements TodoUseCase {
     }
 
     @Override
-    public void update(Todo todo, Callback<Todo> callback) {
-        //TODO IMPLEMENTAR
+    public void update(final Todo todo, final Callback<Todo> callback) {
+        new ThreadExecutor<Todo>(new ThreadExecutor.Task<Todo>() {
+            @Override
+            public Todo execute() throws Exception {
+                todoRepository.update(todo);
+                return todo;
+            }
+
+            @Override
+            public void finish(Exception error, Todo result) {
+                if(error != null) {
+                    callback.error(error);
+                } else {
+                    callback.success(result);
+                }
+            }
+        }).execute();
     }
 
     @Override
-    public void delete(Todo todo, Callback<Boolean> callback) {
-        //TODO IMPLEMENTAR
+    public void delete(final Todo todo, final Callback<Boolean> callback) {
+        new ThreadExecutor<Boolean>(new ThreadExecutor.Task<Boolean>() {
+            @Override
+            public Boolean execute() throws Exception {
+                todoRepository.delete(todo);
+                return true;
+            }
+
+            @Override
+            public void finish(Exception error, Boolean result) {
+                if(error != null) {
+                    callback.error(error);
+                } else {
+                    callback.success(result);
+                }
+            }
+        }).execute();
     }
 
     @Override

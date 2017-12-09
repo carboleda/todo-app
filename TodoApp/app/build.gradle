@@ -32,6 +32,9 @@ dependencies {
     compile 'com.google.firebase:firebase-auth:11.0.4'
     compile 'com.google.firebase:firebase-database:11.0.4'
     compile 'android.arch.persistence.room:runtime:1.0.0'
+    compile 'com.squareup.retrofit2:retrofit:2.3.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.3.0'
+    compile 'com.google.code.gson:gson:2.8.2'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'android.arch.persistence.room:compiler:1.0.0'
 }

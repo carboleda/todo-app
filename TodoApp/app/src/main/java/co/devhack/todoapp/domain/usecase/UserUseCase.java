@@ -13,4 +13,6 @@ public interface UserUseCase {
     void signUp(String fullName, String email, String password, Callback<User> callback);
 
     void recoveryPassword(String email, Callback<Boolean> callback);
+
+    boolean isValidLoginAndPassword(String email, String password);
 }

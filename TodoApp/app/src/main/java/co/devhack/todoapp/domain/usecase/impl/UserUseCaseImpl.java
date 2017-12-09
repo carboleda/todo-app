@@ -3,6 +3,7 @@ package co.devhack.todoapp.domain.usecase.impl;
 import co.devhack.todoapp.domain.model.User;
 import co.devhack.todoapp.domain.usecase.UserUseCase;
 import co.devhack.todoapp.helpers.Callback;
+import co.devhack.todoapp.helpers.Utilities;
 import co.devhack.todoapp.repository.UserRepository;
 import co.devhack.todoapp.repository.impl.UserFirebaseRepository;
 
@@ -65,5 +66,10 @@ public class UserUseCaseImpl implements UserUseCase {
                 callback.error(error);
             }
         });
+    }
+
+    @Override
+    public boolean isValidLoginAndPassword(String email, String password) {
+        return !Utilities.isEmpty(email) && !Utilities.isEmpty(password);
     }
 }
