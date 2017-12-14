@@ -100,7 +100,8 @@ public class TodoRestRepository implements TodoRepository {
     }
 
     private String uploadImage(Integer todoId, String image) throws FileNotFoundException {
-        if(!Utilities.isEmpty(image)) {
+        //Se valida que la imagen no comience con http ya que en ese caso la imagen no sea nueva
+        if(!Utilities.isEmpty(image) && !image.startsWith("http")) {
             FirebaseStorage storage = FirebaseStorage.getInstance();
             // Create a storage reference from our app
             StorageReference storageRef = storage.getReference();
