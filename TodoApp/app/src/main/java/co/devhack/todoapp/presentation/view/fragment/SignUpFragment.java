@@ -80,6 +80,7 @@ public class SignUpFragment extends Fragment implements SignUpContract.View, Vie
     public void goToMainActivity() {
         Intent intent = new Intent(getContext(), MainActivity.class);
         startActivity(intent);
+        getActivity().finish();
     }
 
     @Override

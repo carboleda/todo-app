@@ -1,8 +1,10 @@
 package co.devhack.todoapp.domain.usecase.impl;
 
 import co.devhack.todoapp.domain.model.User;
+import co.devhack.todoapp.domain.usecase.LocalDataUseCase;
 import co.devhack.todoapp.domain.usecase.UserUseCase;
 import co.devhack.todoapp.helpers.Callback;
+import co.devhack.todoapp.helpers.Constants;
 import co.devhack.todoapp.helpers.Utilities;
 import co.devhack.todoapp.repository.UserRepository;
 import co.devhack.todoapp.repository.impl.UserFirebaseRepository;
@@ -14,20 +16,28 @@ import co.devhack.todoapp.repository.impl.UserFirebaseRepository;
 public class UserUseCaseImpl implements UserUseCase {
 
     private UserRepository userRepository;
+    private LocalDataUseCase localDataUseCase;
 
     public UserUseCaseImpl() {
         this.userRepository = new UserFirebaseRepository();
+        this.localDataUseCase = new LocalDataUseCaseImpl();
     }
 
     @Override
-    public void login(String email, String password, final boolean remember, final Callback<User> callback) {
+    public void login(final String email, String password, final boolean remember, final Callback<User> callback) {
         userRepository.login(email, password, new Callback<User>() {
             @Override
             public void success(User user) {
-                if(user != null && remember) {
-                    //TODO GUARDAR EMAIL EN SharedPreferences
+                try {
+                    if(user != null && remember) {
+                        localDataUseCase.setData(Constants.SHARED_PREF_EMAIL, email);
+                    }
+
+                    localDataUseCase.setData(Constants.SHARED_PREF_IS_AUTH, true);
+                    callback.success(user);
+                } catch (Exception e) {
+                    callback.error(e);
                 }
-                callback.success(user);
             }
 
             @Override

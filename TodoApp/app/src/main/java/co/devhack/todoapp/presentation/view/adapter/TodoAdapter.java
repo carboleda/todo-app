@@ -8,11 +8,14 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import java.text.SimpleDateFormat;
 import java.util.List;
 
 import co.devhack.todoapp.R;
 import co.devhack.todoapp.domain.model.Todo;
+import co.devhack.todoapp.helpers.Utilities;
 
 /**
  * Created by krlosf on 5/12/17.
@@ -21,6 +24,7 @@ import co.devhack.todoapp.domain.model.Todo;
 public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.TodoViewHolder> {
 
     private List<Todo> dataSet;
+    private final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd 'de' MMM 'de' yyyy");
 
     public TodoAdapter(List<Todo> dataSet) {
         this.dataSet = dataSet;
@@ -36,11 +40,14 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.TodoViewHolder
     public void onBindViewHolder(TodoViewHolder holder, int position) {
         Todo todo = dataSet.get(position);
 
-        holder.cbFinished.setChecked(todo.getFinished());
+        holder.cbFinished.setChecked(todo.getFinished() != null && todo.getFinished());
         holder.cbFinished.setText(todo.getDescription());
-        //TODO holder.ivPhoto.
-        //TODO FORMATEAR FECHA USANDO java.text.SimpleDateFormat
-        holder.tvFinishDate.setText(todo.getFinishDate().toString());
+        if(!Utilities.isEmpty(todo.getImage())) {
+            Glide.with(holder.itemView).load(todo.getImage()).into(holder.ivPhoto);
+        }
+        String finishDate = holder.itemView.getContext()
+                .getString(R.string.finish_date_template, simpleDateFormat.format(todo.getFinishDate()));
+        holder.tvFinishDate.setText(finishDate);
     }
 
     @Override

@@ -16,10 +16,14 @@ public interface LoginContract {
         void showProgress();
 
         void hideProgress();
+
+        void showRememberedUser(String email);
     }
 
     interface UserActionsListener {
         void onLogin(String email, String password, boolean remember);
+
+        void configure();
     }
 
 }

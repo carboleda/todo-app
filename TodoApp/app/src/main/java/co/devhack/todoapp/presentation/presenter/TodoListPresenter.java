@@ -32,7 +32,9 @@ public class TodoListPresenter implements TodoListContract.UserActionsListener {
                 //Se hace clear sobre la instancia del lstTodos para evitar que el adapter quede
                 //con una referencia vieja de los datos cuando se actualicen
                 lstTodos.clear();
-                lstTodos.addAll(result);
+                if(result != null) {
+                    lstTodos.addAll(result);
+                }
             }
 
             @Override

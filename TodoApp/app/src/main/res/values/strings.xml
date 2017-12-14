@@ -27,5 +27,6 @@
     <string name="add_a_photo">Agrega una foto</string>
     <string name="recovery_email_sent">Hemos enviado un correo para que recuperes tu contraseña</string>
     <string name="accept">Aceptar</string>
+    <string name="finish_date_template">Finaliza el: %1$s</string>
 
 </resources>

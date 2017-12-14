@@ -1,5 +1,6 @@
 package co.devhack.todoapp.presentation.view.activity;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -40,11 +41,13 @@ public class AuthActivity extends AppCompatActivity
 
     @Override
     public void goToLoginFragment() {
-        replaceFragment(LoginFragment.getInstance(), true);
+        replaceFragment(LoginFragment.getInstance(), false);
     }
 
     @Override
     public void goMainActivity() {
-
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

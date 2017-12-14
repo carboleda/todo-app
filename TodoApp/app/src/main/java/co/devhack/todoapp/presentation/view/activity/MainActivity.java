@@ -1,8 +1,8 @@
 package co.devhack.todoapp.presentation.view.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -16,10 +16,18 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import co.devhack.todoapp.service.MyService2;
 import co.devhack.todoapp.R;
+import co.devhack.todoapp.presentation.presenter.MainContarct;
+import co.devhack.todoapp.presentation.presenter.MainPresenter;
+import co.devhack.todoapp.presentation.view.fragment.AddTodoFragment;
+import co.devhack.todoapp.presentation.view.fragment.TodoListFragment;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements MainContarct.View, NavigationView.OnNavigationItemSelectedListener {
+
+    private MainContarct.UserActionsListener mActionsListener;
+    private ActionBarDrawerToggle toggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,23 +36,39 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        mActionsListener = new MainPresenter(this);
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                goToAddTodoFragment();
             }
         });
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(getSupportFragmentManager().getBackStackEntryCount() > 1) {
+                    onBackPressed();
+                } else {
+                    drawer.openDrawer(GravityCompat.START);
+                }
+            }
+        });
+
+        goToTodoListFragment();
+
+        startService(new Intent(this, MyService2.class));
     }
 
     @Override
@@ -52,8 +76,8 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
+        } else if(getSupportFragmentManager().getBackStackEntryCount() > 1) {
+            getSupportFragmentManager().popBackStack();
         }
     }
 
@@ -85,23 +109,40 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        if (id == R.id.nav_add_todo) {
+            goToAddTodoFragment();
+        } else if (id == R.id.nav_todo_list) {
+            goToTodoListFragment();
+        } else if (id == R.id.nav_exit) {
+            mActionsListener.exit();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+
+    public void goToAddTodoFragment() {
+        AddTodoFragment addTodoFragment = AddTodoFragment.getInstance();
+        replaceFragment(addTodoFragment, true);
+    }
+
+    public void goToTodoListFragment() {
+        TodoListFragment todoListFragment = TodoListFragment.getInstance();
+        replaceFragment(todoListFragment, true);
+    }
+
+    @Override
+    public void goToAuthActivity() {
+        Intent intent = new Intent(this, AuthActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    @Override
+    public void showMessageError(Exception e) {
+        //Snackbar.make(get, error.getMessage(), Snackbar.LENGTH_LONG).show();
     }
 
     public void replaceFragment(Fragment fragment, boolean addToBackStack) {
@@ -115,4 +156,10 @@ public class MainActivity extends AppCompatActivity
         fragmentTransaction.commit();
     }
 
+    public void setEnableBackbutton(boolean enable) {
+        getSupportActionBar().setDisplayHomeAsUpEnabled(enable);
+        if(!enable) {
+            toggle.syncState();
+        }
+    }
 }

@@ -13,9 +13,9 @@ public interface TodoRepository {
 
     Long insert(Todo todo) throws Exception;
 
-    void update(Todo todo);
+    void update(Todo todo) throws Exception;
 
-    void delete(Todo todo);
+    void delete(Todo todo) throws Exception;
 
     List<Todo> getAll() throws Exception;
 

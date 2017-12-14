@@ -64,6 +64,8 @@ public class LoginFragment extends Fragment implements LoginContract.View, View.
         btnNotHaveAccount.setOnClickListener(this);
         tvForgotPassword.setOnClickListener(this);
 
+        mActionsListener.configure();
+
         return view;
     }
 
@@ -92,6 +94,7 @@ public class LoginFragment extends Fragment implements LoginContract.View, View.
     public void goToMainActivity() {
         Intent intent = new Intent(getContext(), MainActivity.class);
         startActivity(intent);
+        getActivity().finish();
     }
 
     public void goToRecoveryPassword() {
@@ -114,6 +117,11 @@ public class LoginFragment extends Fragment implements LoginContract.View, View.
     @Override
     public void hideProgress() {
         pbProgress.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void showRememberedUser(String email) {
+        tilEmail.getEditText().setText(email);
     }
 
     private void onLogin() {
